@@ -1,0 +1,2 @@
+# GetirCaseStudy
+ReadingIsGood-UmutIsmetErdolu
