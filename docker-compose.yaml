@@ -1,7 +1,7 @@
-version: '4.6'
+version: '2'
 services:
   backend:
-    image: "backend"
+    image: "readingisgood"
     build: ./
     ports:
       - "8080:8080"

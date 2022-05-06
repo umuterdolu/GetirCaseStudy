@@ -28,11 +28,11 @@ public class BookServiceImpl implements BookService {
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findBy(bookName));
 
         if (bookEntity.isPresent()) {
-            return responseAndLogMessage(ResponseMessagesConstants.BOOK_IS_ALREADY_HAVE_REGISTERED, bookName);
+            return responseAndLogMessage(ResponseMessagesConstants.BOOK_IS_ALREADY_REGISTERED);
         } else {
             BookEntity newBook = new BookEntity(bookRequestDto.bookName(), bookRequestDto.stock());
             bookRepository.save(newBook);
-            return responseAndLogMessage(ResponseMessagesConstants.BOOK_HAS_BEEN_REGISTERED, bookName);
+            return responseAndLogMessage(ResponseMessagesConstants.BOOK_HAS_BEEN_REGISTERED);
         }
     }
 
@@ -42,21 +42,15 @@ public class BookServiceImpl implements BookService {
 
         if (bookEntity.isPresent()) {
             bookRepository.save(new BookEntity(bookName, stock));
-            return responseAndLogMessage(ResponseMessagesConstants.BOOK_STOCK_HAS_BEEN_UPDATED, bookName, stock);
+            return responseAndLogMessage(ResponseMessagesConstants.BOOK_STOCK_HAS_BEEN_UPDATED + stock);
         } else {
             throw new BookNotFoundException();
         }
 
     }
 
-    private String responseAndLogMessage(String message, String bookName) {
-        logger.log(Level.INFO, message, bookName);
-        return message.formatted(bookName);
+    private String responseAndLogMessage(String message) {
+        logger.log(Level.INFO, message);
+        return message;
     }
-
-    private String responseAndLogMessage(String message, String bookName, int stock) {
-        logger.log(Level.INFO, message, bookName, stock);
-        return message.formatted(bookName, stock);
-    }
-
 }

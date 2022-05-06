@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -34,25 +34,28 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<CustomerEntity> customerEntity = Optional.ofNullable(customerRepository.findBy(idNumber));
 
         if (customerEntity.isPresent()) {
-            return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_IS_ALREADY_HAVE_REGISTERED, idNumber);
+            logger.log(Level.INFO, customerRequestDto);
+            return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_IS_ALREADY_REGISTERED);
         } else {
             CustomerEntity newCustomer = new CustomerEntity(customerRequestDto.name(), customerRequestDto.surname(),
                     idNumber);
             customerRepository.save(newCustomer);
-            return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_HAS_BEEN_REGISTERED, idNumber);
+            return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_HAS_BEEN_REGISTERED);
         }
     }
 
     @Override
-    public Page<OrderEntity> ordersOfCustomer(String customerId) {
+    public List<OrderEntity> ordersOfCustomer(String customerId) {
         CustomerEntity customer = Optional
                 .ofNullable(customerRepository.findBy(customerId))
                 .orElseThrow(CustomerNotFoundException::new);
-        return orderRepository.findAllByCustomer(customer, Pageable.ofSize(10));
+        return orderRepository
+                .findAllByCustomer(customer, Pageable.ofSize(10))
+                .toList();
     }
 
-    private String responseAndLogMessage(String message, String idNumber) {
-        logger.log(Level.INFO, message, idNumber);
-        return message.formatted(idNumber);
+    private String responseAndLogMessage(String message) {
+        logger.log(Level.INFO, message);
+        return message;
     }
 }
