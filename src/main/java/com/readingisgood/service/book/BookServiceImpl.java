@@ -1,5 +1,6 @@
 package com.readingisgood.service.book;
 
+import com.readingisgood.constants.ExceptionMessagesConstants;
 import com.readingisgood.constants.ResponseMessagesConstants;
 import com.readingisgood.dto.BookRequestDto;
 import com.readingisgood.entity.BookEntity;
@@ -41,10 +42,11 @@ public class BookServiceImpl implements BookService {
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findBy(bookName));
 
         if (bookEntity.isPresent()) {
+            logger.log(Level.INFO, "Book Name: {} --- Stock: {}", bookName, stock);
             bookRepository.save(new BookEntity(bookName, stock));
-            return responseAndLogMessage(ResponseMessagesConstants.BOOK_STOCK_HAS_BEEN_UPDATED + stock);
+            return responseAndLogMessage(ResponseMessagesConstants.BOOK_STOCK_HAS_BEEN_UPDATED.formatted(stock));
         } else {
-            throw new BookNotFoundException();
+            throw new BookNotFoundException(ExceptionMessagesConstants.BOOK_IS_NOT_FOUND.formatted(bookName));
         }
 
     }

@@ -9,7 +9,7 @@ public class BookNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 7819764911297516501L;
 
-    public BookNotFoundException() {
-        super();
+    public BookNotFoundException(String message) {
+        super(message);
     }
 }

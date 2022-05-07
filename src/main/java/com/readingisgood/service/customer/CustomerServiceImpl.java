@@ -1,5 +1,6 @@
 package com.readingisgood.service.customer;
 
+import com.readingisgood.constants.ExceptionMessagesConstants;
 import com.readingisgood.constants.ResponseMessagesConstants;
 import com.readingisgood.dto.CustomerRequestDto;
 import com.readingisgood.entity.CustomerEntity;
@@ -48,7 +49,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<OrderEntity> ordersOfCustomer(String customerId) {
         CustomerEntity customer = Optional
                 .ofNullable(customerRepository.findBy(customerId))
-                .orElseThrow(CustomerNotFoundException::new);
+                .orElseThrow(() -> new CustomerNotFoundException(
+                        ExceptionMessagesConstants.CUSTOMER_IS_NOT_FOUND.formatted(customerId)));
+
         return orderRepository
                 .findAllByCustomer(customer, Pageable.ofSize(10))
                 .toList();
