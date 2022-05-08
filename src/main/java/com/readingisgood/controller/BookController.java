@@ -26,7 +26,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/updateBookStock/{bookName}")
-    public String updateBookStock(@PathVariable String bookName, @RequestParam int stock) {
-        return bookService.updateBookStock(bookName, stock);
+    public String updateBookStock(@Valid @RequestBody BookRequestDto bookRequestDto) {
+        return bookService.updateBookStock(bookRequestDto);
     }
 }

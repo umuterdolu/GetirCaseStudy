@@ -12,7 +12,7 @@ import java.util.List;
 public interface OrderService {
     String takeNewOrder(OrderRequestDto orderRequestDto);
 
-    List<OrderEntity> orderById();
+    OrderEntity orderById(String orderId);
 
     List<OrderEntity> orderByDateInterval(LocalDate startDate, LocalDate endDate);
 }

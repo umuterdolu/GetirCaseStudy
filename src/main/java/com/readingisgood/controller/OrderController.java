@@ -28,9 +28,9 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/orderById")
-    public List<OrderEntity> orderById() {
-        return orderService.orderById();
+    @GetMapping(value = "/orderById/{orderId}")
+    public OrderEntity orderById(@PathVariable String orderId) {
+        return orderService.orderById(orderId);
     }
 
     @ResponseStatus(HttpStatus.OK)

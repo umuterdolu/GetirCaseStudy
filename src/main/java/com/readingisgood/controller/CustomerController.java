@@ -21,9 +21,9 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/customerOrders/{customerId}")
-    public List<OrderEntity> ordersOfCustomer(@PathVariable String customerId) {
-        return customerService.ordersOfCustomer(customerId);
+    @GetMapping(value = "/customerOrders/{email}")
+    public List<OrderEntity> ordersOfCustomer(@PathVariable String email) {
+        return customerService.ordersOfCustomer(email);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

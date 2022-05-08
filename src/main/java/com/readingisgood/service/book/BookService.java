@@ -8,5 +8,9 @@ import com.readingisgood.dto.BookRequestDto;
 public interface BookService {
     String registerNewBook(BookRequestDto bookRequestDto);
 
-    String updateBookStock(String bookName, int stock);
+    String updateBookStock(BookRequestDto bookRequestDto);
+
+    default void updateBookStock(String bookName, int stock, double price) {
+        updateBookStock(new BookRequestDto(bookName, stock, price));
+    }
 }

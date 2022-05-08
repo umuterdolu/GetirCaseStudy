@@ -12,5 +12,4 @@ import java.time.LocalDate;
 @Document(collection = "orders")
 public record OrderEntity(@Id String orderId, CustomerEntity customer, BookEntity book,
                           Status status, LocalDate orderDate) {
-
 }

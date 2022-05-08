@@ -31,19 +31,21 @@ public class BookServiceImpl implements BookService {
         if (bookEntity.isPresent()) {
             return responseAndLogMessage(ResponseMessagesConstants.BOOK_IS_ALREADY_REGISTERED);
         } else {
-            BookEntity newBook = new BookEntity(bookRequestDto.bookName(), bookRequestDto.stock());
+            BookEntity newBook = new BookEntity(bookRequestDto.bookName(), bookRequestDto.stock(), bookRequestDto.price());
             bookRepository.save(newBook);
             return responseAndLogMessage(ResponseMessagesConstants.BOOK_HAS_BEEN_REGISTERED);
         }
     }
 
     @Override
-    public String updateBookStock(String bookName, int stock) {
+    public String updateBookStock(BookRequestDto bookRequestDto) {
+        String bookName = bookRequestDto.bookName();
+        int stock = bookRequestDto.stock();
         Optional<BookEntity> bookEntity = Optional.ofNullable(bookRepository.findBy(bookName));
 
         if (bookEntity.isPresent()) {
             logger.log(Level.INFO, "Book Name: {} --- Stock: {}", bookName, stock);
-            bookRepository.save(new BookEntity(bookName, stock));
+            bookRepository.save(new BookEntity(bookName, stock, bookEntity.get().price()));
             return responseAndLogMessage(ResponseMessagesConstants.BOOK_STOCK_HAS_BEEN_UPDATED.formatted(stock));
         } else {
             throw new BookNotFoundException(ExceptionMessagesConstants.BOOK_IS_NOT_FOUND.formatted(bookName));

@@ -31,26 +31,26 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String registerNewCustomer(CustomerRequestDto customerRequestDto) {
-        String idNumber = customerRequestDto.idNumber();
-        Optional<CustomerEntity> customerEntity = Optional.ofNullable(customerRepository.findBy(idNumber));
+        String email = customerRequestDto.email();
+        Optional<CustomerEntity> customerEntity = Optional.ofNullable(customerRepository.findByEmail(email));
 
         if (customerEntity.isPresent()) {
             logger.log(Level.INFO, customerRequestDto);
             return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_IS_ALREADY_REGISTERED);
         } else {
             CustomerEntity newCustomer = new CustomerEntity(customerRequestDto.name(), customerRequestDto.surname(),
-                    idNumber);
+                    email);
             customerRepository.save(newCustomer);
             return responseAndLogMessage(ResponseMessagesConstants.CUSTOMER_HAS_BEEN_REGISTERED);
         }
     }
 
     @Override
-    public List<OrderEntity> ordersOfCustomer(String customerId) {
+    public List<OrderEntity> ordersOfCustomer(String email) {
         CustomerEntity customer = Optional
-                .ofNullable(customerRepository.findBy(customerId))
+                .ofNullable(customerRepository.findByEmail(email))
                 .orElseThrow(() -> new CustomerNotFoundException(
-                        ExceptionMessagesConstants.CUSTOMER_IS_NOT_FOUND.formatted(customerId)));
+                        ExceptionMessagesConstants.CUSTOMER_IS_NOT_FOUND));
 
         return orderRepository
                 .findAllByCustomer(customer, Pageable.ofSize(10))

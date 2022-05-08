@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Umut Ismet Erdolu
  */
 @Document(collection = "books")
-public record BookEntity(@Id String bookName, int stock) {
+public record BookEntity(@Id String bookName, int stock, double price) {
 }

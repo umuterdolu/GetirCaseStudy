@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author Umut Ismet Erdolu
  */
-@Document(collection = "customers")
-public record CustomerEntity(String name, String surname, @Id String email) {
+@Document("statistics")
+public record StatisticEntity(@Id String email, CustomerEntity customer, BookEntity book, OrderEntity order) {
 }

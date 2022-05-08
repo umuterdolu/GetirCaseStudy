@@ -9,6 +9,8 @@ import com.readingisgood.entity.OrderEntity;
 import com.readingisgood.enums.Status;
 import com.readingisgood.exception.BookNotFoundException;
 import com.readingisgood.exception.CustomerNotFoundException;
+import com.readingisgood.exception.InsufficientBookStockException;
+import com.readingisgood.exception.OrderNotFoundException;
 import com.readingisgood.repository.BookRepository;
 import com.readingisgood.repository.CustomerRepository;
 import com.readingisgood.repository.OrderRepository;
@@ -39,17 +41,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String takeNewOrder(OrderRequestDto orderRequestDto) {
-        String customerId = orderRequestDto.customerId();
+        String email = orderRequestDto.email();
         CustomerEntity customer = Optional
-                .ofNullable(customerRepository.findBy(customerId))
+                .ofNullable(customerRepository.findByEmail(email))
                 .orElseThrow(() -> new CustomerNotFoundException(
-                        ExceptionMessagesConstants.CUSTOMER_IS_NOT_FOUND.formatted(customerId)));
+                        ExceptionMessagesConstants.CUSTOMER_IS_NOT_FOUND));
 
         String bookName = orderRequestDto.bookName();
         BookEntity book = Optional
                 .ofNullable(bookRepository.findBy(orderRequestDto.bookName()))
                 .orElseThrow(() -> new BookNotFoundException(
                         ExceptionMessagesConstants.BOOK_IS_NOT_FOUND.formatted(bookName)));
+
+        validateBookStock(book.stock(), orderRequestDto.count());
 
         Optional<OrderEntity> optionalOrder = Optional.ofNullable(orderRepository.findByCustomerAndBook(customer, book));
 
@@ -62,22 +66,28 @@ public class OrderServiceImpl implements OrderService {
             OrderEntity order = orderRepository.save(
                     new OrderEntity(UUID.randomUUID().toString(), customer, book,
                             Status.CONFIRMED, LocalDate.now()));
-            bookService.updateBookStock(bookName, book.stock() - orderRequestDto.count());
+            bookService.updateBookStock(bookName, book.stock() - orderRequestDto.count(), book.price());
             return responseAndLogMessage(ResponseMessagesConstants.ORDER_HAS_BEEN_TAKEN.formatted(order.orderId()));
         }
     }
 
     @Override
-    public List<OrderEntity> orderById() {
-        return orderRepository.findAll()
-                .stream()
-                .sorted()
-                .toList();
+    public OrderEntity orderById(String orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new OrderNotFoundException(ExceptionMessagesConstants.ORDER_IS_NOT_FOUND));
     }
 
     @Override
     public List<OrderEntity> orderByDateInterval(LocalDate startDate, LocalDate endDate) {
         return orderRepository.findByOrderDateBetween(startDate, endDate);
+    }
+
+    private void validateBookStock(int bookStock, int count) {
+        if (bookStock < 1 || bookStock < count) {
+            throw new InsufficientBookStockException(
+                    ExceptionMessagesConstants.INSUFFICIENT_BOOK_STOCK.formatted(bookStock));
+        }
     }
 
     private String responseAndLogMessage(String message) {

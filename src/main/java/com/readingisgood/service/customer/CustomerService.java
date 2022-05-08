@@ -11,5 +11,5 @@ import java.util.List;
 public interface CustomerService {
     String registerNewCustomer(CustomerRequestDto customerRequestDto);
 
-    List<OrderEntity> ordersOfCustomer(String customerId);
+    List<OrderEntity> ordersOfCustomer(String email);
 }
