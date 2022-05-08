@@ -20,7 +20,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/registerBook")
-    public String registerNewCustomer(@Valid @RequestBody BookRequestDto bookRequestDto) {
+    public String registerNewBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.registerNewBook(bookRequestDto);
     }
 
