@@ -19,13 +19,13 @@ public class BookController {
     private final BookService bookService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/registerBook")
+    @PostMapping(value = "/registerNewBook")
     public String registerNewBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.registerNewBook(bookRequestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/updateBookStock/{bookName}")
+    @PostMapping(value = "/updateBookStock")
     public String updateBookStock(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.updateBookStock(bookRequestDto);
     }

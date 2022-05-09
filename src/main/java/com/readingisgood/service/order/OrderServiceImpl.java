@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Random;
 
 /**
  * @author Umut Ismet Erdolu
@@ -63,11 +63,12 @@ public class OrderServiceImpl implements OrderService {
             return responseAndLogMessage(ResponseMessagesConstants.ORDER_IS_ALREADY_HAVE
                     .formatted(order.orderId(), order.status()));
         } else {
-            OrderEntity order = orderRepository.save(
-                    new OrderEntity(UUID.randomUUID().toString(), customer, book,
+            String orderId = generateId();
+            orderRepository.save(
+                    new OrderEntity(orderId, customer, book,
                             Status.CONFIRMED, LocalDate.now()));
             bookService.updateBookStock(bookName, book.stock() - orderRequestDto.count(), book.price());
-            return responseAndLogMessage(ResponseMessagesConstants.ORDER_HAS_BEEN_TAKEN.formatted(order.orderId()));
+            return responseAndLogMessage(ResponseMessagesConstants.ORDER_HAS_BEEN_TAKEN.formatted(orderId));
         }
     }
 
@@ -88,6 +89,11 @@ public class OrderServiceImpl implements OrderService {
             throw new InsufficientBookStockException(
                     ExceptionMessagesConstants.INSUFFICIENT_BOOK_STOCK.formatted(bookStock));
         }
+    }
+
+    private String generateId() {
+        Random random = new Random(System.nanoTime());
+        return String.valueOf(random.nextInt(1000000));
     }
 
     private String responseAndLogMessage(String message) {

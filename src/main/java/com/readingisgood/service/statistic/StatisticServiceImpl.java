@@ -32,7 +32,7 @@ public class StatisticServiceImpl implements StatisticService {
         Map<Month, Long> totalOrderCountMapMonthly = (Map<Month, Long>) collectOrderMap(orderEntityList,
                 o -> o.orderDate().getMonth(), Collectors.counting());
 
-        Map<Month, Integer> totalBookCountMapMonthly = (Map<Month, Integer>) collectOrderMap(orderEntityList,
+        Map<Month, Long> totalBookCountMapMonthly = (Map<Month, Long>) collectOrderMap(orderEntityList,
                 o -> o.orderDate().getMonth(), Collectors.mapping(
                         OrderEntity::book, Collectors.counting()));
 
@@ -50,7 +50,7 @@ public class StatisticServiceImpl implements StatisticService {
                     statisticResponseDtoList.add(
                             new StatisticResponseDto(now.getMonth().name(),
                                     totalOrderCountMapMonthly.get(month).intValue(),
-                                    totalBookCountMapMonthly.get(month),
+                                    totalBookCountMapMonthly.get(month).intValue(),
                                     totalPurchaseAmountMapMonthly.get(month)
                             ));
                 }

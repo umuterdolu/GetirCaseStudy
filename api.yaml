@@ -1,0 +1,262 @@
+openapi: 3.0.1
+info:
+  title: defaultTitle
+  description: defaultDescription
+  version: '0.1'
+servers:
+  - url: http://localhost:8080
+paths:
+  /registerNewBook:
+    post:
+      description: Auto generated using Swagger Inspector
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+                stock:
+                  type: integer
+                bookName:
+                  type: string
+            examples:
+              '0':
+                value: |-
+                  {
+                      "bookName":"Alamut Kalesi",
+                      "stock":1,
+                      "price":15.00
+                  }
+      responses:
+        '201':
+          description: Auto generated using Swagger Inspector
+          content:
+            text/plain;charset=UTF-8:
+              schema:
+                type: string
+              examples: { }
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /customerOrders/umutismeterdolu@gmail.com:
+    get:
+      description: Auto generated using Swagger Inspector
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { }
+              examples:
+                '0':
+                  value: >-
+                    [{"orderId":"48609","customer":{"name":"Umut","surname":"Erdolu","email":"umutismeterdolu@gmail.com"},"book":{"bookName":"Alamut
+                    Kalesi","stock":1,"price":15.0},"status":"CONFIRMED","orderDate":"2022-05-09"}]
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /orderByDateInterval:
+    post:
+      description: Auto generated using Swagger Inspector
+      parameters:
+        - name: endDate
+          in: query
+          schema:
+            type: string
+          example: '2022-05-10'
+        - name: startDate
+          in: query
+          schema:
+            type: string
+          example: '2022-05-05'
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { }
+              examples:
+                '0':
+                  value: >-
+                    [{"orderId":"48609","customer":{"name":"Umut","surname":"Erdolu","email":"umutismeterdolu@gmail.com"},"book":{"bookName":"Alamut
+                    Kalesi","stock":1,"price":15.0},"status":"CONFIRMED","orderDate":"2022-05-09"}]
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /customerOrderStatistics/umutismeterdolu@gmail.com:
+    get:
+      description: Auto generated using Swagger Inspector
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { }
+              examples:
+                '0':
+                  value: >-
+                    [{"month":"MAY","totalOrderCount":1,"totalBookCount":1,"totalPurchaseAmount":15.0}]
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /newOrder:
+    post:
+      description: Auto generated using Swagger Inspector
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                bookName:
+                  type: string
+                email:
+                  type: string
+            examples:
+              '0':
+                value: |-
+                  {
+                      "bookName":"Alamut Kalesi",
+                      "email":"umutismeterdolu@gmail.com",
+                      "count":1
+                  }
+      responses:
+        '201':
+          description: Auto generated using Swagger Inspector
+          content:
+            text/plain;charset=UTF-8:
+              schema:
+                type: string
+              examples: { }
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /updateBookStock:
+    post:
+      description: Auto generated using Swagger Inspector
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: number
+                stock:
+                  type: integer
+                bookName:
+                  type: string
+            examples:
+              '0':
+                value: |-
+                  {
+                      "bookName":"Alamut Kalesi",
+                      "stock":1,
+                      "price":15.00
+                  }
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            text/plain;charset=UTF-8:
+              schema:
+                type: string
+              examples: { }
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /registerNewCustomer:
+    post:
+      description: Auto generated using Swagger Inspector
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                surname:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+            examples:
+              '0':
+                value: |-
+                  {
+                      "name":"Umut",
+                      "surname":"Erdolu",
+                      "email":"umutismeterdolu@gmail.com"
+                  }
+      responses:
+        '201':
+          description: Auto generated using Swagger Inspector
+          content:
+            text/plain;charset=UTF-8:
+              schema:
+                type: string
+              examples: { }
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
+  /orderById/48609:
+    get:
+      description: Auto generated using Swagger Inspector
+      responses:
+        '200':
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: string
+                  book:
+                    type: object
+                    properties:
+                      price:
+                        type: number
+                      stock:
+                        type: integer
+                      bookName:
+                        type: string
+                  orderDate:
+                    type: string
+                  customer:
+                    type: object
+                    properties:
+                      surname:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  status:
+                    type: string
+              examples:
+                '0':
+                  value: >-
+                    {"orderId":"48609","customer":{"name":"Umut","surname":"Erdolu","email":"umutismeterdolu@gmail.com"},"book":{"bookName":"Alamut
+                    Kalesi","stock":1,"price":15.0},"status":"CONFIRMED","orderDate":"2022-05-09"}
+      servers:
+        - url: http://localhost:8080
+    servers:
+      - url: http://localhost:8080
